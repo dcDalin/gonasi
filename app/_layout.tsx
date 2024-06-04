@@ -17,6 +17,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import GoHead from '@/components/GoHead';
 import HomeStack from '@/components/stacks/HomeStack';
 import { persistor, store } from '@/store/store';
+import { customFontsToLoad } from '@/unistyles/fonts';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -28,9 +29,7 @@ export default function RootLayout() {
 
   useInitialTheme(userTheme);
 
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
+  const [loaded] = useFonts(customFontsToLoad);
 
   const hideSplashScreen = () => {
     SplashScreen.hideAsync();

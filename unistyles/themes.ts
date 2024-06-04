@@ -1,4 +1,5 @@
 import adjustColorBrightness from '../utils/adjustColorBrightness';
+import { typography } from './fonts';
 
 // Define all color variables
 const primary = '#ff7f0e';
@@ -68,6 +69,7 @@ const generateTheme = (isDark: boolean) => ({
     lg: 8,
     xl: 12,
   },
+  typography,
 });
 
 export const lightTheme = generateTheme(false);
