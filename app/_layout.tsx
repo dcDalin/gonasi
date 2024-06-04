@@ -7,11 +7,16 @@ import {
   ThemeProvider,
 } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 import { useInitialTheme } from 'react-native-unistyles';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+
+import GoHead from '@/components/GoHead';
+import HomeStack from '@/components/stacks/HomeStack';
+import { persistor, store } from '@/store/store';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -27,6 +32,10 @@ export default function RootLayout() {
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
 
+  const hideSplashScreen = () => {
+    SplashScreen.hideAsync();
+  };
+
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
@@ -37,12 +46,22 @@ export default function RootLayout() {
     return null;
   }
 
+  const onBeforeLiftPersistGate = () => {
+    setTimeout(hideSplashScreen, 500);
+  };
+
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
+      <Provider store={store}>
+        <PersistGate
+          loading={null}
+          onBeforeLift={onBeforeLiftPersistGate}
+          persistor={persistor}
+        >
+          <GoHead title="Welcome" />
+          <HomeStack />
+        </PersistGate>
+      </Provider>
     </ThemeProvider>
   );
 }
