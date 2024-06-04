@@ -24,10 +24,10 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
+  const isDarkTheme = colorScheme === 'dark';
+  const userTheme = isDarkTheme ? DarkTheme : DefaultTheme;
 
-  const userTheme = colorScheme === 'dark' ? 'dark' : 'light';
-
-  useInitialTheme(userTheme);
+  useInitialTheme(isDarkTheme ? 'dark' : 'light');
 
   const [loaded] = useFonts(customFontsToLoad);
 
@@ -50,7 +50,7 @@ export default function RootLayout() {
   };
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <ThemeProvider value={userTheme}>
       <Provider store={store}>
         <PersistGate
           loading={null}

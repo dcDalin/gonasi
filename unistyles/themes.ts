@@ -1,5 +1,5 @@
-import adjustColorBrightness from '../utils/adjustColorBrightness';
-import { typography } from './fonts';
+import { typography } from '@/unistyles/fonts';
+import adjustColorBrightness from '@/utils/adjustColorBrightness';
 
 // Define all color variables
 const primary = '#ff7f0e';
@@ -68,6 +68,16 @@ const generateTheme = (isDark: boolean) => ({
     md: 4,
     lg: 8,
     xl: 12,
+  },
+  size: {
+    xxl: { fontSize: 36, lineHeight: 44 },
+    xl: { fontSize: 24, lineHeight: 34 },
+    lg: { fontSize: 20, lineHeight: 32 },
+    md: { fontSize: 18, lineHeight: 26 },
+    sm: { fontSize: 16, lineHeight: 24 },
+    xs: { fontSize: 14, lineHeight: 21 },
+    xxs: { fontSize: 12, lineHeight: 18 },
+    xxxs: { fontSize: 10, lineHeight: 14 },
   },
   typography,
 });
