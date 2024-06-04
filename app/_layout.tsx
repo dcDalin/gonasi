@@ -1,3 +1,4 @@
+import '../unistyles/unistyles';
 import 'react-native-reanimated';
 
 import {
@@ -9,14 +10,19 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { useColorScheme } from 'react-native';
+import { useInitialTheme } from 'react-native-unistyles';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
+
+  const userTheme = colorScheme === 'dark' ? 'dark' : 'light';
+
+  useInitialTheme(userTheme);
+
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
