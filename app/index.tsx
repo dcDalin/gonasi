@@ -22,6 +22,10 @@ export default function HomeScreen() {
           />
         </View>
         <View style={styles.bottmView}>
+          <GoButton text="Let's Go!" onPress={() => {}} preset="primary" />
+          <GoButton text="Let's Go!" onPress={() => {}} preset="secondary" />
+          <GoButton text="Let's Go!" onPress={() => {}} preset="accent" />
+          <GoButton text="Let's Go!" onPress={() => {}} preset="outline" />
           <GoButton text="Let's Go!" onPress={() => {}} />
         </View>
       </View>

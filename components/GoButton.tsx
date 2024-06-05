@@ -59,7 +59,8 @@ export default function GoButton(props: IGoButtonProps) {
 
   return (
     <Pressable
-      style={styles.container}
+      // style={styles.container}
+      style={({ pressed }) => [styles.container(pressed)]}
       accessibilityState={{ disabled: !!disabled }}
       {...rest}
       disabled={disabled}
@@ -97,20 +98,21 @@ export default function GoButton(props: IGoButtonProps) {
 
 const stylesheet = createStyleSheet(
   ({ size, colors, margins, typography }) => ({
-    container: {
+    container: (pressed: boolean) => ({
       borderTopWidth: 2,
       borderLeftWidth: 2,
       borderRightWidth: 2,
-      borderBottomWidth: 4,
+      borderBottomWidth: pressed ? 2 : 4,
       justifyContent: 'center',
       alignItems: 'center',
       flexDirection: 'row',
       overflow: 'hidden',
+      marginTop: pressed ? 2 : 0,
       variants: {
         size: {
           sm: {},
           md: {
-            height: 48,
+            height: pressed ? 46 : 48,
             borderRadius: 16,
           },
           lg: {},
@@ -118,16 +120,27 @@ const stylesheet = createStyleSheet(
         preset: {
           default: {
             borderColor: colors.neutralLight,
-            backgroundColor: colors.neutral,
+            backgroundColor: pressed ? colors.neutralLight : colors.neutral,
           },
-          primary: {},
-          secondary: {},
-          outline: {},
-          accent: {},
+          primary: {
+            borderColor: colors.primaryLight,
+            backgroundColor: pressed ? colors.primaryLight : colors.primary,
+          },
+          secondary: {
+            borderColor: colors.secondaryLight,
+            backgroundColor: pressed ? colors.secondaryLight : colors.secondary,
+          },
+          outline: {
+            borderColor: colors.neutral,
+            backgroundColor: colors.transparent,
+          },
+          accent: {
+            borderColor: colors.accentLight,
+            backgroundColor: pressed ? colors.accentLight : colors.accent,
+          },
         },
       },
-    },
-
+    }),
     buttonText: {
       fontFamily: typography.secondary.bold,
       textAlign: 'center',
@@ -148,10 +161,18 @@ const stylesheet = createStyleSheet(
           default: {
             color: colors.neutralContent,
           },
-          primary: {},
-          secondary: {},
-          outline: {},
-          accent: {},
+          primary: {
+            color: colors.primaryContent,
+          },
+          secondary: {
+            color: colors.secondaryContent,
+          },
+          outline: {
+            color: colors.neutralContent,
+          },
+          accent: {
+            color: colors.accentContent,
+          },
         },
       },
     },
