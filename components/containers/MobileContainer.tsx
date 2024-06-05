@@ -28,7 +28,7 @@ const stylesheet = createStyleSheet(({ colors, margins }) => ({
       md: '60%',
     },
     paddingHorizontal: {
-      xs: margins.xl,
+      xs: margins.md,
     },
   },
 }));

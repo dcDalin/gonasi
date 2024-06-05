@@ -12,7 +12,7 @@ import {
   REHYDRATE,
 } from 'redux-persist';
 
-import counterReducer from './counterSlice';
+import counterReducer from '@/store/counterSlice';
 
 const persistConfig = {
   key: 'root',

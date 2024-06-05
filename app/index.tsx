@@ -3,6 +3,7 @@ import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
 import AppLogo from '@/components/AppLogo';
 import MobileContainer from '@/components/containers/MobileContainer';
+import GoButton from '@/components/GoButton';
 import GoText from '@/components/GoText';
 
 export default function HomeScreen() {
@@ -19,6 +20,9 @@ export default function HomeScreen() {
             text="The Ultimate All-in-One Driving Solution!"
             preset="p5"
           />
+        </View>
+        <View style={styles.bottmView}>
+          <GoButton text="Let's Go!" onPress={() => {}} />
         </View>
       </View>
     </MobileContainer>
@@ -37,5 +41,8 @@ const stylesheet = createStyleSheet((theme) => ({
   },
   logoText: {
     color: theme.colors.baseContent,
+  },
+  bottmView: {
+    paddingBottom: theme.margins.xl,
   },
 }));

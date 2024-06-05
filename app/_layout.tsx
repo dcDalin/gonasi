@@ -1,4 +1,4 @@
-import '../unistyles/unistyles';
+import '../unistyles';
 import 'react-native-reanimated';
 
 import {
@@ -27,9 +27,9 @@ export default function RootLayout() {
   const isDarkTheme = colorScheme === 'dark';
   const userTheme = isDarkTheme ? DarkTheme : DefaultTheme;
 
-  useInitialTheme(isDarkTheme ? 'dark' : 'light');
-
   const [loaded] = useFonts(customFontsToLoad);
+
+  useInitialTheme(isDarkTheme ? 'dark' : 'light');
 
   const hideSplashScreen = () => {
     SplashScreen.hideAsync();
