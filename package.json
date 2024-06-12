@@ -16,6 +16,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@babel/plugin-proposal-export-namespace-from": "^7.18.9",
     "@expo-google-fonts/montserrat": "^0.2.3",
     "@expo-google-fonts/signika": "^0.2.3",
     "@expo/vector-icons": "^14.0.0",
