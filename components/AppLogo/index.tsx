@@ -1,4 +1,4 @@
-import Icon from '@/components/Icon';
+import GoIcon from '@/components/GoIcon';
 
 interface IAppLogoProps {
   size?: number;
@@ -7,5 +7,5 @@ interface IAppLogoProps {
 export default function AppLogo(props: IAppLogoProps) {
   const { size = 80 } = props;
 
-  return <Icon icon={'appLogo'} size={size} />;
+  return <GoIcon icon={'appLogo'} size={size} />;
 }

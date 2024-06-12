@@ -10,13 +10,13 @@ import {
   ViewStyle,
 } from 'react-native';
 
-export type IconTypes = keyof typeof iconRegistry;
+export type GoIconTypes = keyof typeof iconRegistry;
 
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 interface IconProps extends PressableProps {
-  icon: IconTypes;
+  icon: GoIconTypes;
   color?: string;
   size?: number;
   style?: StyleProp<ImageStyle>;
@@ -24,7 +24,7 @@ interface IconProps extends PressableProps {
   onPress?: PressableProps['onPress'];
 }
 
-export default function Icon(props: IconProps) {
+export default function GoIcon(props: IconProps) {
   const {
     icon,
     color,

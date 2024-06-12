@@ -1,7 +1,9 @@
+import { ComponentType } from 'react';
 import {
   ActivityIndicator,
   Pressable,
   PressableProps,
+  PressableStateCallbackType,
   StyleProp,
   TextStyle,
   View,
@@ -10,6 +12,12 @@ import {
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
 import GoText, { GoTextProps } from '@/components/GoText';
+
+export interface ButtonAccessoryProps {
+  style: StyleProp<any>;
+  pressableState: PressableStateCallbackType;
+  disabled?: boolean;
+}
 
 type PresetKeys = 'primary' | 'secondary' | 'outline' | 'accent' | undefined;
 type SizeKeys = 'sm' | 'md' | 'lg' | undefined;
@@ -23,8 +31,8 @@ interface IGoButtonProps extends PressableProps {
   disabledTextStyle?: StyleProp<TextStyle>;
   size?: SizeKeys;
   preset?: PresetKeys;
-  RightAccessory?: React.ReactNode;
-  LeftAccessory?: React.ReactNode;
+  LeftAccessory?: ComponentType<ButtonAccessoryProps>;
+  RightAccessory?: ComponentType<ButtonAccessoryProps>;
   children?: React.ReactNode;
   disabled?: boolean;
   disabledStyle?: StyleProp<ViewStyle>;
@@ -41,8 +49,8 @@ export default function GoButton(props: IGoButtonProps) {
     pressedTextStyle: $pressedTextStyleOverride,
     disabledTextStyle: $disabledTextStyleOverride,
     children,
-    RightAccessory,
     LeftAccessory,
+    RightAccessory,
     disabled,
     disabledStyle: $disabledViewStyleOverride,
     preset,
@@ -67,7 +75,13 @@ export default function GoButton(props: IGoButtonProps) {
     >
       {(state) => (
         <>
-          {LeftAccessory}
+          {!!LeftAccessory && (
+            <LeftAccessory
+              style={styles.leftAccessory}
+              pressableState={state}
+              disabled={disabled}
+            />
+          )}
 
           <View>
             <GoText text={text} style={styles.buttonText}>
@@ -76,7 +90,13 @@ export default function GoButton(props: IGoButtonProps) {
             {loading && <ActivityIndicator size="small" color={'red'} />}
           </View>
 
-          {RightAccessory}
+          {!!RightAccessory && (
+            <RightAccessory
+              style={styles.rightAccessory}
+              pressableState={state}
+              disabled={disabled}
+            />
+          )}
         </>
       )}
     </Pressable>
@@ -128,6 +148,14 @@ const stylesheet = createStyleSheet(
         },
       },
     }),
+    leftAccessory: {
+      marginStart: margins.xs,
+      zIndex: 1,
+    },
+    rightAccessory: {
+      marginEnd: margins.xs,
+      zIndex: 1,
+    },
     buttonText: {
       fontFamily: typography.secondary.bold,
       textAlign: 'center',
