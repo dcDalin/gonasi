@@ -59,7 +59,6 @@ export default function GoButton(props: IGoButtonProps) {
 
   return (
     <Pressable
-      // style={styles.container}
       style={({ pressed }) => [styles.container(pressed)]}
       accessibilityState={{ disabled: !!disabled }}
       {...rest}
@@ -68,13 +67,7 @@ export default function GoButton(props: IGoButtonProps) {
     >
       {(state) => (
         <>
-          {/* {!!LeftAccessory && (
-            <LeftAccessory
-              style={$leftAccessoryStyle}
-              pressableState={state}
-              disabled={disabled}
-            />
-          )} */}
+          {LeftAccessory}
 
           <View>
             <GoText text={text} style={styles.buttonText}>
@@ -83,13 +76,7 @@ export default function GoButton(props: IGoButtonProps) {
             {loading && <ActivityIndicator size="small" color={'red'} />}
           </View>
 
-          {/* {!!RightAccessory && (
-            <RightAccessory
-              style={$rightAccessoryStyle}
-              pressableState={state}
-              disabled={disabled}
-            />
-          )} */}
+          {RightAccessory}
         </>
       )}
     </Pressable>
