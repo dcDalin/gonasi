@@ -127,7 +127,7 @@ const stylesheet = createStyleSheet(
           sm: {},
           md: {
             height: pressed ? 46 : 48,
-            borderRadius: 16,
+            borderRadius: size.lg,
           },
           lg: {},
         },
