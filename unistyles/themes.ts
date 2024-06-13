@@ -63,7 +63,7 @@ const generateTheme = (isDark: boolean) => ({
     errorContent: lightErrorContent,
     transparent,
   },
-  margins: {
+  size: {
     xxxs: 2,
     xxs: 4,
     xs: 8,
@@ -74,7 +74,7 @@ const generateTheme = (isDark: boolean) => ({
     xxl: 48,
     xxxl: 64,
   },
-  size: {
+  fontSize: {
     xxl: { fontSize: 36, lineHeight: 44 },
     xl: { fontSize: 24, lineHeight: 34 },
     lg: { fontSize: 20, lineHeight: 32 },

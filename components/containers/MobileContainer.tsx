@@ -22,7 +22,7 @@ export default function MobileContainer(props: IMobileContainerProps) {
   );
 }
 
-const stylesheet = createStyleSheet(({ colors, margins }) => ({
+const stylesheet = createStyleSheet(({ colors, size }) => ({
   bg: {
     flex: 1,
     backgroundColor: colors.base100,
@@ -38,7 +38,7 @@ const stylesheet = createStyleSheet(({ colors, margins }) => ({
     },
     margin: 'auto',
     paddingHorizontal: {
-      xs: margins.md,
+      xs: size.md,
     },
   }),
 }));

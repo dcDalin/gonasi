@@ -48,7 +48,7 @@ const stylesheet = createStyleSheet((theme) => ({
     color: theme.colors.baseContent,
   },
   bottmView: {
-    paddingBottom: theme.margins.xl,
-    gap: theme.margins.lg,
+    paddingBottom: theme.size.xl,
+    gap: theme.size.lg,
   },
 }));

@@ -48,73 +48,73 @@ export default function GoText(props: GoTextProps) {
   );
 }
 
-const stylesheet = createStyleSheet(({ size, typography, colors }) => ({
+const stylesheet = createStyleSheet(({ fontSize, typography, colors }) => ({
   textPresets: {
     color: colors.baseContent,
     variants: {
       preset: {
         default: {
-          ...size.sm,
+          ...fontSize.sm,
           fontFamily: typography.primary.normal,
         },
         bold: {
-          ...size.sm,
+          ...fontSize.sm,
           fontFamily: typography.primary.bold,
         },
         heading: {
-          ...size.xxl,
+          ...fontSize.xxl,
           fontFamily: typography.secondary.bold,
         },
         subheading: {
-          ...size.lg,
+          ...fontSize.lg,
           fontFamily: typography.primary.normal,
         },
         formLabel: {
-          ...size.sm,
+          ...fontSize.sm,
           fontFamily: typography.primary.semiBold,
         },
         formHelper: {
-          ...size.xs,
+          ...fontSize.xs,
           fontFamily: typography.primary.light,
         },
         h1: {
-          ...size.xxl,
+          ...fontSize.xxl,
           fontFamily: typography.secondary.bold,
         },
         h2: {
-          ...size.xl,
+          ...fontSize.xl,
           fontFamily: typography.secondary.bold,
         },
         h3: {
-          ...size.lg,
+          ...fontSize.lg,
           fontFamily: typography.secondary.medium,
         },
         h4: {
-          ...size.md,
+          ...fontSize.md,
           fontFamily: typography.secondary.medium,
         },
         h5: {
-          ...size.sm,
+          ...fontSize.sm,
           fontFamily: typography.secondary.normal,
         },
         p1: {
-          ...size.md,
+          ...fontSize.md,
           fontFamily: typography.primary.normal,
         },
         p2: {
-          ...size.sm,
+          ...fontSize.sm,
           fontFamily: typography.primary.normal,
         },
         p3: {
-          ...size.xs,
+          ...fontSize.xs,
           fontFamily: typography.primary.normal,
         },
         p4: {
-          ...size.xxs,
+          ...fontSize.xxs,
           fontFamily: typography.primary.normal,
         },
         p5: {
-          ...size.xxxs,
+          ...fontSize.xxxs,
           fontFamily: typography.primary.normal,
         },
       },

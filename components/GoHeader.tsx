@@ -164,14 +164,14 @@ function HeaderAction(props: GoHeaderActionProps) {
   return <View style={[styles.actionFillerContainer, { backgroundColor }]} />;
 }
 
-const stylesheet = createStyleSheet(({ margins, typography }) => ({
+const stylesheet = createStyleSheet(({ size, typography }) => ({
   container: {
     width: '100%',
     paddingTop: UnistylesRuntime.insets.top,
     paddingHorizontal: {
-      xs: margins.sm,
-      sm: margins.sm,
-      md: margins.xl,
+      xs: size.sm,
+      sm: size.sm,
+      md: size.xl,
     },
   },
   wrapper: {
@@ -186,7 +186,7 @@ const stylesheet = createStyleSheet(({ margins, typography }) => ({
     height: '100%',
     width: '100%',
     position: 'absolute',
-    paddingHorizontal: margins.xxl,
+    paddingHorizontal: size.xxl,
     zIndex: 1,
   },
   titleWrapperFlex: {
@@ -196,14 +196,14 @@ const stylesheet = createStyleSheet(({ margins, typography }) => ({
   title: {
     textAlign: 'center',
     fontFamily: typography.secondary.bold,
-    fontSize: margins.lg,
+    fontSize: size.lg,
   },
   actionTextContainer: {
     flexGrow: 0,
     alignItems: 'center',
     justifyContent: 'center',
     height: '100%',
-    paddingHorizontal: margins.md,
+    paddingHorizontal: size.md,
     zIndex: 2,
   },
   actionIconContainer: {
@@ -211,7 +211,7 @@ const stylesheet = createStyleSheet(({ margins, typography }) => ({
     alignItems: 'center',
     justifyContent: 'center',
     height: '100%',
-    paddingHorizontal: margins.md,
+    paddingHorizontal: size.md,
     zIndex: 2,
   },
   actionFillerContainer: {

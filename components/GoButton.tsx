@@ -111,7 +111,7 @@ export default function GoButton(props: IGoButtonProps) {
 }
 
 const stylesheet = createStyleSheet(
-  ({ size, colors, margins, typography }) => ({
+  ({ fontSize, colors, size, typography }) => ({
     container: (pressed: boolean) => ({
       borderTopWidth: 2,
       borderLeftWidth: 2,
@@ -160,11 +160,11 @@ const stylesheet = createStyleSheet(
       },
     }),
     leftAccessory: {
-      marginStart: margins.xs,
+      marginStart: size.xs,
       zIndex: 1,
     },
     rightAccessory: {
-      marginEnd: margins.xs,
+      marginEnd: size.xs,
       zIndex: 1,
     },
     buttonText: {
@@ -174,12 +174,12 @@ const stylesheet = createStyleSheet(
       flexGrow: 0,
       zIndex: 2,
       letterSpacing: 1,
-      paddingHorizontal: margins.lg,
+      paddingHorizontal: size.lg,
       variants: {
         size: {
           sm: {},
           md: {
-            ...size.lg,
+            ...fontSize.lg,
             fontFamily: typography.secondary.medium,
           },
           lg: {},
