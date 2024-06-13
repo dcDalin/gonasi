@@ -203,7 +203,6 @@ const stylesheet = createStyleSheet(({ size, typography }) => ({
     alignItems: 'center',
     justifyContent: 'center',
     height: '100%',
-    paddingHorizontal: size.md,
     zIndex: 2,
   },
   actionIconContainer: {
@@ -211,7 +210,6 @@ const stylesheet = createStyleSheet(({ size, typography }) => ({
     alignItems: 'center',
     justifyContent: 'center',
     height: '100%',
-    paddingHorizontal: size.md,
     zIndex: 2,
   },
   actionFillerContainer: {
