@@ -164,57 +164,59 @@ function HeaderAction(props: GoHeaderActionProps) {
   return <View style={[styles.actionFillerContainer, { backgroundColor }]} />;
 }
 
-const stylesheet = createStyleSheet(({ size, typography }) => ({
-  container: {
-    width: '100%',
-    paddingTop: UnistylesRuntime.insets.top,
-    paddingHorizontal: {
-      xs: size.sm,
-      sm: size.sm,
-      md: size.xl,
+const stylesheet = createStyleSheet(
+  ({ fontSize: { lg }, size, typography }) => ({
+    container: {
+      width: '100%',
+      paddingTop: UnistylesRuntime.insets.top,
+      paddingHorizontal: {
+        xs: size.sm,
+        sm: size.sm,
+        md: size.xl,
+      },
     },
-  },
-  wrapper: {
-    height: 60,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  titleWrapperCenter: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100%',
-    width: '100%',
-    position: 'absolute',
-    paddingHorizontal: size.xxl,
-    zIndex: 1,
-  },
-  titleWrapperFlex: {
-    justifyContent: 'center',
-    flexGrow: 1,
-  },
-  title: {
-    textAlign: 'center',
-    fontFamily: typography.secondary.bold,
-    fontSize: size.lg,
-  },
-  actionTextContainer: {
-    flexGrow: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100%',
-    paddingHorizontal: size.xs,
-    zIndex: 2,
-  },
-  actionIconContainer: {
-    flexGrow: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100%',
-    paddingHorizontal: size.xs,
-    zIndex: 2,
-  },
-  actionFillerContainer: {
-    width: 16,
-  },
-}));
+    wrapper: {
+      height: 60,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    titleWrapperCenter: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: '100%',
+      width: '100%',
+      position: 'absolute',
+      paddingHorizontal: size.xxl,
+      zIndex: 1,
+    },
+    titleWrapperFlex: {
+      justifyContent: 'center',
+      flexGrow: 1,
+    },
+    title: {
+      textAlign: 'center',
+      fontFamily: typography.secondary.bold,
+      ...lg,
+    },
+    actionTextContainer: {
+      flexGrow: 0,
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: '100%',
+      paddingHorizontal: size.xs,
+      zIndex: 2,
+    },
+    actionIconContainer: {
+      flexGrow: 0,
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: '100%',
+      paddingHorizontal: size.xs,
+      zIndex: 2,
+    },
+    actionFillerContainer: {
+      width: 16,
+    },
+  })
+);
