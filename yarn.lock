@@ -907,15 +907,15 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.57.0.tgz#a5417ae8427873f1dd08b70b3574b453e67b5f7f"
   integrity sha512-Ys+3g2TaW7gADOJzPt83SJtCDhMjndcDMFVQ/Tj9iA1BfJzFKD9mAUXT3OenpuPHbI6P/myECxRJrofUsDx/5g==
 
+"@expo-google-fonts/barlow-condensed@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/barlow-condensed/-/barlow-condensed-0.2.3.tgz#cf161b5047fbd7e240259964f32fb0eecfaf5b8d"
+  integrity sha512-ZAPrXoUEuGsrOSna6Yxb/xOB78COEiPmjRxXUyHniydqAEgtwi8JEqVLxBu8x7y3SYohjccAQyDslNvEad1IMw==
+
 "@expo-google-fonts/montserrat@^0.2.3":
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/@expo-google-fonts/montserrat/-/montserrat-0.2.3.tgz#e22b337ee6bd2007126b466ddd18f9de59eb3fc6"
   integrity sha512-9imhwIs6j5uyTkTxoNplC5T8ERES1W98ZgF7kf7OaypnbcoLoIW0wKH6oudecZyiEqoSktC7epkRpj+UEUvzWg==
-
-"@expo-google-fonts/signika@^0.2.3":
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/@expo-google-fonts/signika/-/signika-0.2.3.tgz#4dcce03a36820d8566f7b065c4445af7a18c90da"
-  integrity sha512-7f82RDZXh4AamxOMYVM1nYOvmm5jkYvnL+YeWRDnZQ22H+eCg7YbySAE8G8A3kaVKBF0HOuVcCZqQRhwJnc2Og==
 
 "@expo/bunyan@^4.0.0":
   version "4.0.0"

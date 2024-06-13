@@ -1,4 +1,11 @@
 import {
+  BarlowCondensed_300Light,
+  BarlowCondensed_400Regular,
+  BarlowCondensed_500Medium,
+  BarlowCondensed_600SemiBold,
+  BarlowCondensed_700Bold,
+} from '@expo-google-fonts/barlow-condensed';
+import {
   Montserrat_100Thin,
   Montserrat_100Thin_Italic,
   Montserrat_400Regular,
@@ -8,13 +15,6 @@ import {
   Montserrat_700Bold,
   Montserrat_700Bold_Italic,
 } from '@expo-google-fonts/montserrat';
-import {
-  Signika_300Light,
-  Signika_400Regular,
-  Signika_500Medium,
-  Signika_600SemiBold,
-  Signika_700Bold,
-} from '@expo-google-fonts/signika';
 
 export const customFontsToLoad = {
   Montserrat_100Thin,
@@ -26,11 +26,11 @@ export const customFontsToLoad = {
   Montserrat_700Bold,
   Montserrat_700Bold_Italic,
 
-  Signika_300Light,
-  Signika_400Regular,
-  Signika_500Medium,
-  Signika_600SemiBold,
-  Signika_700Bold,
+  BarlowCondensed_300Light,
+  BarlowCondensed_400Regular,
+  BarlowCondensed_500Medium,
+  BarlowCondensed_600SemiBold,
+  BarlowCondensed_700Bold,
 };
 
 const fonts = {
@@ -43,16 +43,16 @@ const fonts = {
     bold: 'Montserrat_700Bold',
     boldItalaic: 'Montserrat_700Bold_Italic',
   },
-  signika: {
-    thin: 'Signika_300Light',
-    light: 'Signika_400Regular',
-    normal: 'Signika_500Medium',
-    medium: 'Signika_600SemiBold',
-    bold: 'Signika_700Bold',
+  barlow: {
+    thin: 'BarlowCondensed_300Light',
+    light: 'BarlowCondensed_400Regular',
+    normal: 'BarlowCondensed_500Medium',
+    medium: 'BarlowCondensed_600SemiBold',
+    bold: 'BarlowCondensed_700Bold',
   },
 };
 
 export const typography = {
   primary: fonts.montserrat,
-  secondary: fonts.signika,
+  secondary: fonts.barlow,
 };
