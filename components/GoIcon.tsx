@@ -63,4 +63,11 @@ export default function GoIcon(props: IconProps) {
 
 export const iconRegistry = {
   appLogo: require('../assets/images/icon.png'),
+  back: require('../assets/icons/back.png'),
+  rightArrow: require('../assets/icons/right-arrow.png'),
 };
+
+// Type guard to check if a value is of type GoIconTypes
+export function isGoIconType(value: any): value is GoIconTypes {
+  return Object.keys(iconRegistry).includes(value);
+}

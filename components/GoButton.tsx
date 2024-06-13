@@ -12,6 +12,7 @@ import {
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
 import GoText, { GoTextProps } from '@/components/GoText';
+import adjustColorBrightness from '@/utils/adjustColorBrightness';
 
 export interface ButtonAccessoryProps {
   style: StyleProp<any>;
@@ -19,7 +20,13 @@ export interface ButtonAccessoryProps {
   disabled?: boolean;
 }
 
-type PresetKeys = 'primary' | 'secondary' | 'outline' | 'accent' | undefined;
+type PresetKeys =
+  | 'primary'
+  | 'secondary'
+  | 'outline'
+  | 'accent'
+  | 'ghost'
+  | undefined;
 type SizeKeys = 'sm' | 'md' | 'lg' | undefined;
 
 interface IGoButtonProps extends PressableProps {
@@ -145,6 +152,10 @@ const stylesheet = createStyleSheet(
             borderColor: colors.accentLight,
             backgroundColor: pressed ? colors.accentLight : colors.accent,
           },
+          ghost: {
+            borderColor: colors.transparent,
+            backgroundColor: colors.transparent,
+          },
         },
       },
     }),
@@ -163,6 +174,7 @@ const stylesheet = createStyleSheet(
       flexGrow: 0,
       zIndex: 2,
       letterSpacing: 1,
+      paddingHorizontal: margins.lg,
       variants: {
         size: {
           sm: {},

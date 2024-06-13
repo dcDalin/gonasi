@@ -7,16 +7,17 @@ import {
 
 interface IMobileContainerProps {
   children: React.ReactNode;
+  topInset?: boolean;
 }
 
 export default function MobileContainer(props: IMobileContainerProps) {
-  const { children } = props;
+  const { children, topInset = true } = props;
 
   const { styles } = useStyles(stylesheet);
 
   return (
     <View style={styles.bg}>
-      <View style={styles.container}>{children}</View>
+      <View style={styles.container(topInset)}>{children}</View>
     </View>
   );
 }
@@ -26,9 +27,9 @@ const stylesheet = createStyleSheet(({ colors, margins }) => ({
     flex: 1,
     backgroundColor: colors.base100,
   },
-  container: {
+  container: (topInset: boolean) => ({
     flex: 1,
-    paddingTop: UnistylesRuntime.insets.top,
+    paddingTop: topInset ? UnistylesRuntime.insets.top : 0,
     width: {
       xs: '100%',
       sm: '100%',
@@ -39,5 +40,5 @@ const stylesheet = createStyleSheet(({ colors, margins }) => ({
     paddingHorizontal: {
       xs: margins.md,
     },
-  },
+  }),
 }));

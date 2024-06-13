@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import { View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
@@ -22,11 +23,11 @@ export default function HomeScreen() {
           />
         </View>
         <View style={styles.bottmView}>
-          <GoButton text="Let's Go!" onPress={() => {}} preset="primary" />
-          <GoButton text="Let's Go!" onPress={() => {}} preset="secondary" />
-          <GoButton text="Let's Go!" onPress={() => {}} preset="accent" />
-          <GoButton text="Let's Go!" onPress={() => {}} preset="outline" />
-          <GoButton text="Let's Go!" onPress={() => {}} />
+          <GoButton
+            text="Let's Go!"
+            onPress={() => router.push('/auth/login')}
+            preset="primary"
+          />
         </View>
       </View>
     </MobileContainer>
@@ -48,5 +49,6 @@ const stylesheet = createStyleSheet((theme) => ({
   },
   bottmView: {
     paddingBottom: theme.margins.xl,
+    gap: theme.margins.lg,
   },
 }));
