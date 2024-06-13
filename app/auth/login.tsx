@@ -1,34 +1,24 @@
-import { useNavigation } from 'expo-router';
-import { ArrowLeft } from 'lucide-react-native';
-import { Text, View } from 'react-native';
-import { useStyles } from 'react-native-unistyles';
+import { View } from 'react-native';
 
 import MobileContainer from '@/components/containers/MobileContainer';
-import GoButton from '@/components/GoButton';
-import { GoTextField } from '@/components/GoTextField';
-import { useHeader } from '@/utils/useHeader';
+import LoginForm from '@/components/forms/LoginForm';
+import GoHead from '@/components/GoHead';
+import GoText from '@/components/GoText';
+import AuthLayout from '@/components/layouts/AuthLayout';
 
 export default function LoginScreen() {
-  const navigation = useNavigation();
-  const {
-    theme: { colors },
-  } = useStyles();
-
-  useHeader(
-    {
-      leftIcon: <ArrowLeft color={colors.baseContent} size={20} />,
-      title: 'Login',
-      onLeftPress: () => navigation.goBack(),
-    },
-    []
-  );
-
   return (
     <MobileContainer topInset={false}>
-      <Text>Login Screen</Text>
-      <GoTextField label={'undefined'} helper="some help" status="error" />
-      <View style={{ paddingVertical: 10 }}></View>
-      <GoButton text="Let's Go!" onPress={() => {}} preset="primary" />
+      <GoHead title="Login" />
+      <AuthLayout
+        authForm={<LoginForm />}
+        bottomSection={
+          <View>
+            <GoText text="Don't have an account? " />
+            {/* <Link href="/auth/signup" text="Sign Up" /> */}
+          </View>
+        }
+      />
     </MobileContainer>
   );
 }

@@ -1,9 +1,11 @@
-import { Text, View } from 'react-native';
+import { Text } from 'react-native';
+
+import MobileContainer from '@/components/containers/MobileContainer';
 
 export default function SignUpScreen() {
   return (
-    <View>
+    <MobileContainer topInset={false}>
       <Text>SignUp Screen</Text>
-    </View>
+    </MobileContainer>
   );
 }

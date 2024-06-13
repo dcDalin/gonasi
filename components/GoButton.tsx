@@ -12,7 +12,6 @@ import {
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
 import GoText, { GoTextProps } from '@/components/GoText';
-import adjustColorBrightness from '@/utils/adjustColorBrightness';
 
 export interface ButtonAccessoryProps {
   style: StyleProp<any>;
@@ -38,6 +37,7 @@ interface IGoButtonProps extends PressableProps {
   disabledTextStyle?: StyleProp<TextStyle>;
   size?: SizeKeys;
   preset?: PresetKeys;
+  centerButton?: React.ReactNode;
   LeftAccessory?: ComponentType<ButtonAccessoryProps>;
   RightAccessory?: ComponentType<ButtonAccessoryProps>;
   children?: React.ReactNode;
@@ -57,6 +57,7 @@ export default function GoButton(props: IGoButtonProps) {
     disabledTextStyle: $disabledTextStyleOverride,
     children,
     LeftAccessory,
+    centerButton,
     RightAccessory,
     disabled,
     disabledStyle: $disabledViewStyleOverride,
@@ -90,12 +91,16 @@ export default function GoButton(props: IGoButtonProps) {
             />
           )}
 
-          <View>
-            <GoText text={text} style={styles.buttonText}>
-              {children}
-            </GoText>
-            {loading && <ActivityIndicator size="small" color={'red'} />}
-          </View>
+          {centerButton ? (
+            <View style={styles.centerButton}>{centerButton}</View>
+          ) : (
+            <View>
+              <GoText text={text} style={styles.buttonText}>
+                {children}
+              </GoText>
+              {loading && <ActivityIndicator size="small" color={'red'} />}
+            </View>
+          )}
 
           {!!RightAccessory && (
             <RightAccessory
@@ -166,6 +171,9 @@ const stylesheet = createStyleSheet(
     rightAccessory: {
       marginEnd: size.xs,
       zIndex: 1,
+    },
+    centerButton: {
+      paddingHorizontal: size.xl,
     },
     buttonText: {
       fontFamily: typography.secondary.bold,

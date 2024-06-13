@@ -65,6 +65,10 @@ export const iconRegistry = {
   appLogo: require('../assets/images/icon.png'),
   back: require('../assets/icons/back.png'),
   rightArrow: require('../assets/icons/right-arrow.png'),
+  google: require('../assets/icons/google.png'),
+  facebook: require('../assets/icons/facebook.png'),
+  apple: require('../assets/icons/apple.png'),
+  appleBlack: require('../assets/icons/apple-black.png'),
 };
 
 // Type guard to check if a value is of type GoIconTypes

@@ -15,6 +15,7 @@ export default function HomeScreen() {
       <View style={styles.container}>
         <View style={styles.logoWrapper}>
           <AppLogo />
+
           <GoText text="gonasi" preset="h1" style={styles.logoText} />
           <GoText text="Rev Up Your Drive" preset="p3" />
           <GoText
