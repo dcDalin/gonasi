@@ -4,12 +4,15 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { TextInput, View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import * as Yup from 'yup';
+import { Mail } from 'lucide-react-native';
 
 import GoIcon from '@/components/GoIcon';
 import {
   GoTextField,
   GoTextFieldAccessoryProps,
 } from '@/components/GoTextField';
+import { loginUser } from '@/store/authSlice';
+import { useAppDispatch } from '@/store/store';
 
 import GoButton from '../GoButton';
 
@@ -19,8 +22,8 @@ const loginFormValidationSchema = Yup.object().shape({
     .required('Email is required'),
   password: Yup.string()
     .required('Password is required')
-    .min(10, 'Password must be at least 10 characters long')
-    .max(50, 'Password must be at most 50 characters long'),
+    .min(8, 'Password must be at least 10 characters long')
+    .max(20, 'Password must be at most 50 characters long'),
 });
 
 export type LoginFormValues = {
@@ -31,6 +34,8 @@ export type LoginFormValues = {
 export default function LoginForm() {
   const [isAuthPasswordHidden, setIsAuthPasswordHidden] = useState(true);
   const authPasswordInput = useRef<TextInput>(null);
+
+  const dispatch = useAppDispatch();
 
   const {
     styles,
@@ -51,7 +56,7 @@ export default function LoginForm() {
     <GoIcon
       icon="email"
       color={props.status === 'error' ? colors.error : colors.neutral}
-      size={20}
+      size={18}
       containerStyle={props.style}
     />
   );
@@ -60,7 +65,7 @@ export default function LoginForm() {
     <GoIcon
       icon="key"
       color={props.status === 'error' ? colors.error : colors.neutral}
-      size={20}
+      size={18}
       containerStyle={props.style}
     />
   );
@@ -75,8 +80,8 @@ export default function LoginForm() {
   });
 
   const onSubmit: SubmitHandler<LoginFormValues> = async (loginPayload) => {
-    // await dispatch(loginUser(loginPayload));
     console.log('Payload is: ', loginPayload);
+    await dispatch(loginUser(loginPayload));
   };
 
   return (

@@ -12,6 +12,7 @@ import {
   REHYDRATE,
 } from 'redux-persist';
 
+import authReducer from '@/store/authSlice';
 import counterReducer from '@/store/counterSlice';
 
 const persistConfig = {
@@ -21,6 +22,7 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
+  auth: authReducer,
   counter: counterReducer,
 });
 

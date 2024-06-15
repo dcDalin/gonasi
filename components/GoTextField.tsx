@@ -135,7 +135,7 @@ export const GoTextField = forwardRef(function TextField(
           underlineColorAndroid={colors.transparent}
           textAlignVertical="top"
           placeholder={placeholder}
-          placeholderTextColor={adjustColorBrightness(colors.baseContent, 100)}
+          placeholderTextColor={adjustColorBrightness(colors.baseContent)}
           {...TextInputProps}
           editable={!disabled}
           style={$inputStyles}
@@ -196,13 +196,13 @@ const stylesheet = createStyleSheet(({ colors, size, typography }) => ({
   },
   rightAccessoryStyle: {
     marginEnd: size.xs,
-    height: 40,
+    height: 46,
     justifyContent: 'center',
     alignItems: 'center',
   },
   leftAccessoryStyle: {
     marginStart: size.xs,
-    height: 40,
+    height: 46,
     justifyContent: 'center',
     alignItems: 'center',
   },
