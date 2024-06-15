@@ -19,6 +19,7 @@ import GoHead from '@/components/GoHead';
 import HomeStack from '@/components/stacks/HomeStack';
 import { persistor, store } from '@/store/store';
 import { customFontsToLoad } from '@/unistyles/fonts';
+import { GoToastConfig } from '@/components/GoToastConfig';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -60,7 +61,7 @@ export default function RootLayout() {
         >
           <GoHead title="Welcome" />
           <HomeStack />
-          <Toast />
+          <Toast config={GoToastConfig} />
         </PersistGate>
       </Provider>
     </ThemeProvider>
