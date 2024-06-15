@@ -11,17 +11,18 @@ import GoDivider from '@/components/GoDivider';
 interface IAuthLayoutProps {
   authForm: React.ReactNode;
   bottomSection: React.ReactNode;
+  showSocialIcons?: boolean;
 }
 
 export default function AuthLayout(props: IAuthLayoutProps) {
-  const { authForm, bottomSection } = props;
+  const { authForm, bottomSection, showSocialIcons = true } = props;
 
   const { styles } = useStyles(stylesheet);
 
   return (
     <View style={styles.container}>
       <View style={styles.main}>
-        <SocialAuthButtons />
+        {showSocialIcons && <SocialAuthButtons />}
         <GoDivider text="OR" />
         <View>{authForm}</View>
       </View>
