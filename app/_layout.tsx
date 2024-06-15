@@ -10,6 +10,7 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
+import Toast from 'react-native-toast-message';
 import { useInitialTheme } from 'react-native-unistyles';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -59,6 +60,7 @@ export default function RootLayout() {
         >
           <GoHead title="Welcome" />
           <HomeStack />
+          <Toast />
         </PersistGate>
       </Provider>
     </ThemeProvider>

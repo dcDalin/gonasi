@@ -1,20 +1,19 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { TextInput, View } from 'react-native';
+import Toast from 'react-native-toast-message';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import * as Yup from 'yup';
-import { Mail } from 'lucide-react-native';
 
+import GoButton from '@/components/GoButton';
 import GoIcon from '@/components/GoIcon';
 import {
   GoTextField,
   GoTextFieldAccessoryProps,
 } from '@/components/GoTextField';
 import { loginUser } from '@/store/authSlice';
-import { useAppDispatch } from '@/store/store';
-
-import GoButton from '../GoButton';
+import { useAppDispatch, useAppSelector } from '@/store/store';
 
 const loginFormValidationSchema = Yup.object().shape({
   email: Yup.string()
@@ -22,7 +21,7 @@ const loginFormValidationSchema = Yup.object().shape({
     .required('Email is required'),
   password: Yup.string()
     .required('Password is required')
-    .min(8, 'Password must be at least 10 characters long')
+    .min(8, 'Password must be at least 8 characters long')
     .max(20, 'Password must be at most 50 characters long'),
 });
 
@@ -36,6 +35,19 @@ export default function LoginForm() {
   const authPasswordInput = useRef<TextInput>(null);
 
   const dispatch = useAppDispatch();
+  const { error } = useAppSelector((state) => state.auth);
+
+  console.log('Error is: ', error);
+
+  useEffect(() => {
+    if (error) {
+      Toast.show({
+        type: 'success',
+        text1: 'Hello',
+        text2: error,
+      });
+    }
+  }, [error]);
 
   const {
     styles,
