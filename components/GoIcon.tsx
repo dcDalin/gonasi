@@ -73,6 +73,7 @@ export const iconRegistry = {
   view: require('../assets/icons/view.png'),
   email: require('../assets/icons/email.png'),
   key: require('../assets/icons/key.png'),
+  user: require('../assets/icons/user.png'),
 };
 
 // Type guard to check if a value is of type GoIconTypes

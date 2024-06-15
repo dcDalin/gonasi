@@ -95,10 +95,13 @@ export default function GoButton(props: IGoButtonProps) {
             <View style={styles.centerButton}>{centerButton}</View>
           ) : (
             <View>
-              <GoText text={text} style={styles.buttonText}>
-                {children}
-              </GoText>
-              {loading && <ActivityIndicator size="small" color={'red'} />}
+              {loading ? (
+                <ActivityIndicator size="small" />
+              ) : (
+                <GoText text={text} style={styles.buttonText}>
+                  {children}
+                </GoText>
+              )}
             </View>
           )}
 

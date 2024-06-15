@@ -37,10 +37,38 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+export const signUpUser = createAsyncThunk(
+  'auth/signup',
+  async (
+    credentials: { email: string; password: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      const { error, data } = await supabase.auth.signUp({
+        email: credentials.email,
+        password: credentials.password,
+      });
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      return data;
+    } catch (err: any) {
+      return rejectWithValue(err.message);
+    }
+  }
+);
+
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
+    resetLogin(state) {
+      state.token = null;
+      state.status = 'idle';
+      state.error = null;
+    },
     logout(state) {
       state.token = null;
       state.status = 'idle';
@@ -67,6 +95,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout, resetLogin } = authSlice.actions;
 
 export default authSlice.reducer;

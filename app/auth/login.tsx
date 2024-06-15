@@ -1,4 +1,4 @@
-import { useNavigation } from 'expo-router';
+import { Link, useNavigation } from 'expo-router';
 import { ArrowLeft } from 'lucide-react-native';
 import { View } from 'react-native';
 import { useStyles } from 'react-native-unistyles';
@@ -6,6 +6,7 @@ import { useStyles } from 'react-native-unistyles';
 import MobileContainer from '@/components/containers/MobileContainer';
 import LoginForm from '@/components/forms/LoginForm';
 import GoHead from '@/components/GoHead';
+import GoLink from '@/components/GoLink';
 import GoText from '@/components/GoText';
 import AuthLayout from '@/components/layouts/AuthLayout';
 import { useHeader } from '@/utils/useHeader';
@@ -31,10 +32,10 @@ export default function LoginScreen() {
       <AuthLayout
         authForm={<LoginForm />}
         bottomSection={
-          <View>
+          <GoText>
             <GoText text="Don't have an account? " />
-            {/* <Link href="/auth/signup" text="Sign Up" /> */}
-          </View>
+            <GoLink text="Create one today." href="auth/signup" />
+          </GoText>
         }
       />
     </MobileContainer>

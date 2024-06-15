@@ -33,15 +33,16 @@ export default function AuthLayout(props: IAuthLayoutProps) {
 const stylesheet = createStyleSheet(({ size }) => ({
   container: {
     flex: 1,
+    flexDirection: 'column',
     marginBottom: UnistylesRuntime.insets.bottom,
-    justifyContent: 'space-between',
-    paddingBottom: size.lg,
   },
   main: {
-    flex: 1,
     justifyContent: 'center',
+    flex: 1,
   },
   bottom: {
+    justifyContent: 'flex-end',
     alignItems: 'center',
+    paddingTop: size.xl,
   },
 }));
