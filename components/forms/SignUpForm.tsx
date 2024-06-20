@@ -12,20 +12,34 @@ import {
   GoTextField,
   GoTextFieldAccessoryProps,
 } from '@/components/GoTextField';
-import { loginUser, resetLogin } from '@/store/authSlice';
+import { resetErrors, signUpUser } from '@/store/authSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 
-const loginFormValidationSchema = Yup.object().shape({
+const signUpFormValidationSchema = Yup.object().shape({
   username: Yup.string()
-    .email('Invalid email address')
-    .required('Email is required'),
+    .required('Username is required')
+    .matches(
+      /^[a-zA-Z0-9_]+$/,
+      'Username can only contain letters, numbers, and underscores'
+    )
+    .min(3, 'Username must be at least 3 characters long')
+    .max(20, 'Username must be at most 20 characters long'),
   email: Yup.string()
-    .email('Invalid email address')
-    .required('Email is required'),
+    .required('Email is required')
+    .matches(
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+      'Invalid email address'
+    )
+    .min(3, 'Email must be at least 3 characters long')
+    .max(40, 'Email must be at most 40 characters long'),
   password: Yup.string()
     .required('Password is required')
     .min(8, 'Password must be at least 8 characters long')
-    .max(20, 'Password must be at most 50 characters long'),
+    .max(20, 'Password must be at most 20 characters long')
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+      'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
+    ),
 });
 
 export type SignUpFormValues = {
@@ -46,11 +60,11 @@ export default function SignUpForm() {
   useEffect(() => {
     if (error) {
       Toast.show({
-        type: 'success',
+        type: 'error',
         text2: error,
       });
 
-      dispatch(resetLogin());
+      dispatch(resetErrors());
     }
   }, [dispatch, error]);
 
@@ -132,13 +146,24 @@ export default function SignUpForm() {
     control,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(loginFormValidationSchema),
+    resolver: yupResolver(signUpFormValidationSchema),
     mode: 'onChange',
   });
 
-  const onSubmit: SubmitHandler<SignUpFormValues> = async (loginPayload) => {
-    console.log('Payload is: ', loginPayload);
-    await dispatch(loginUser(loginPayload));
+  const onSubmit: SubmitHandler<SignUpFormValues> = async (signUpPayload) => {
+    const { username, email, password } = signUpPayload;
+
+    await dispatch(
+      signUpUser({
+        email,
+        password,
+        options: {
+          data: {
+            username: username.toLowerCase(),
+          },
+        },
+      })
+    );
   };
 
   return (
@@ -166,7 +191,7 @@ export default function SignUpForm() {
             }
           />
         )}
-        name="email"
+        name="username"
       />
       <Controller
         control={control}

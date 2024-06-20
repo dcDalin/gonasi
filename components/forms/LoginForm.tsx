@@ -12,7 +12,7 @@ import {
   GoTextField,
   GoTextFieldAccessoryProps,
 } from '@/components/GoTextField';
-import { loginUser, resetLogin } from '@/store/authSlice';
+import { loginUser, resetErrors } from '@/store/authSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 
 import GoLink from '../GoLink';
@@ -45,11 +45,11 @@ export default function LoginForm() {
   useEffect(() => {
     if (error) {
       Toast.show({
-        type: 'success',
-        text2: error,
+        type: 'goError',
+        text1: error,
       });
 
-      dispatch(resetLogin());
+      dispatch(resetErrors());
     }
   }, [dispatch, error]);
 

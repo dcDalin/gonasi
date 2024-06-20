@@ -1,44 +1,56 @@
+import { View } from 'react-native';
 import {
   BaseToast,
   BaseToastProps,
   ErrorToast,
 } from 'react-native-toast-message';
-import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import {
+  createStyleSheet,
+  UnistylesRuntime,
+  useStyles,
+} from 'react-native-unistyles';
 
 import adjustColorBrightness from '@/utils/adjustColorBrightness';
 
-function SuccessToast(props: BaseToastProps) {
+import GoText from './GoText';
+
+function GoSuccessToast(props: BaseToastProps) {
+  const { text1 } = props;
+
   const { styles } = useStyles(stylesheet);
 
   return (
-    <BaseToast
-      {...props}
-      style={[styles.wrapper, styles.wrapperSuccess]}
-      contentContainerStyle={styles.contentContainerStyle}
-      text1Style={styles.text1Style}
-      text2Style={styles.text2Style}
-    />
+    <View style={[styles.wrapper, styles.wrapperSuccess]}>
+      <GoText text={text1} style={styles.text1Style} />
+    </View>
   );
 }
 
 function GoErrorToast(props: BaseToastProps) {
+  const { text1 } = props;
+
   const { styles } = useStyles(stylesheet);
 
   return (
-    <ErrorToast
-      {...props}
-      style={[styles.wrapper, styles.wrapperError]}
-      contentContainerStyle={styles.contentContainerStyle}
-      text1Style={styles.text1Style}
-      text2Style={styles.text2Style}
-    />
+    <View style={[styles.wrapper, styles.wrapperError]}>
+      <GoText text={text1} style={styles.text1Style} />
+    </View>
   );
+}
+
+function SuccessToast(props: BaseToastProps) {
+  return <BaseToast {...props} />;
+}
+
+function DefaultErrorToast(props: BaseToastProps) {
+  return <ErrorToast {...props} />;
 }
 
 export const GoToastConfig = {
   success: (props: BaseToastProps) => <SuccessToast {...props} />,
-
-  error: (props: BaseToastProps) => <GoErrorToast {...props} />,
+  error: (props: BaseToastProps) => <DefaultErrorToast {...props} />,
+  goSuccess: (props: BaseToastProps) => <GoSuccessToast {...props} />,
+  goError: (props: BaseToastProps) => <GoErrorToast {...props} />,
 };
 
 const stylesheet = createStyleSheet(
@@ -46,9 +58,9 @@ const stylesheet = createStyleSheet(
     wrapper: {
       borderRadius: size.md,
       borderLeftWidth: 4,
-      borderRightWidth: 0,
-      width: '50%',
-      paddingVertical: 0,
+      paddingHorizontal: size.md,
+      paddingVertical: size.xxs,
+      marginTop: UnistylesRuntime.insets.top - size.lg,
     },
     wrapperSuccess: {
       backgroundColor: adjustColorBrightness(colors.success, 40),
@@ -58,19 +70,10 @@ const stylesheet = createStyleSheet(
       backgroundColor: adjustColorBrightness(colors.error, 40),
       borderLeftColor: colors.error,
     },
-    contentContainerStyle: {
-      paddingHorizontal: size.xs,
-      paddingVertical: 0,
-    },
     text1Style: {
       ...fontSize.md,
       color: colors.successContent,
-      fontFamily: typography.primary.bold,
-    },
-    text2Style: {
-      ...fontSize.sm,
-      color: colors.successContent,
-      fontFamily: typography.secondary.medium,
+      fontFamily: typography.primary.normal,
     },
   })
 );

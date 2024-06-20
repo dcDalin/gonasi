@@ -1,9 +1,12 @@
+import withoutAuthentication from '@/components/HOC/withoutAuthentication';
 import AuthStack from '@/components/stacks/AuthStack';
 
-export default function AuthScreenLayout() {
+function AuthScreenLayout() {
   return (
     <>
       <AuthStack />
     </>
   );
 }
+
+export default withoutAuthentication(AuthScreenLayout);

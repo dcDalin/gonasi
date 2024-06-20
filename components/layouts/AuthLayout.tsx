@@ -44,6 +44,6 @@ const stylesheet = createStyleSheet(({ size }) => ({
   bottom: {
     justifyContent: 'flex-end',
     alignItems: 'center',
-    paddingTop: size.xl,
+    paddingTop: size.xxxl,
   },
 }));

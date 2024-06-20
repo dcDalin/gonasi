@@ -9,17 +9,31 @@ import {
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-import { useColorScheme } from 'react-native';
+import { AppState, useColorScheme } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { useInitialTheme } from 'react-native-unistyles';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
 import GoHead from '@/components/GoHead';
+import { GoToastConfig } from '@/components/GoToastConfig';
 import HomeStack from '@/components/stacks/HomeStack';
+import { supabase } from '@/lib/supabase';
 import { persistor, store } from '@/store/store';
 import { customFontsToLoad } from '@/unistyles/fonts';
-import { GoToastConfig } from '@/components/GoToastConfig';
+
+// Tells Supabase Auth to continuously refresh the session automatically
+// if the app is in the foreground. When this is added, you will continue
+// to receive `onAuthStateChange` events with the `TOKEN_REFRESHED` or
+// `SIGNED_OUT` event if the user's session is terminated. This should
+// only be registered once.
+AppState.addEventListener('change', (state) => {
+  if (state === 'active') {
+    supabase.auth.startAutoRefresh();
+  } else {
+    supabase.auth.stopAutoRefresh();
+  }
+});
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
