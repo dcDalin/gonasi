@@ -1,6 +1,5 @@
-import { Link, useNavigation } from 'expo-router';
+import { useNavigation } from 'expo-router';
 import { ArrowLeft } from 'lucide-react-native';
-import { View } from 'react-native';
 import { useStyles } from 'react-native-unistyles';
 
 import MobileContainer from '@/components/containers/MobileContainer';

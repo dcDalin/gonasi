@@ -7,6 +7,7 @@ import {
   ThemeProvider,
 } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
+import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { AppState, useColorScheme } from 'react-native';
@@ -17,7 +18,6 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 import GoHead from '@/components/GoHead';
 import { GoToastConfig } from '@/components/GoToastConfig';
-import HomeStack from '@/components/stacks/HomeStack';
 import { supabase } from '@/lib/supabase';
 import { persistor, store } from '@/store/store';
 import { customFontsToLoad } from '@/unistyles/fonts';
@@ -74,7 +74,13 @@ export default function RootLayout() {
           persistor={persistor}
         >
           <GoHead title="Welcome" />
-          <HomeStack />
+          <Stack
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            <Stack.Screen name="(public)" />
+          </Stack>
           <Toast config={GoToastConfig} />
         </PersistGate>
       </Provider>

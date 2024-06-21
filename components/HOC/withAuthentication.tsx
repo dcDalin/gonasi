@@ -10,7 +10,7 @@ type withAuthenticationFn = (Component: FC) => FC;
 const withAuthentication: withAuthenticationFn = (Component) => {
   const Authenticated: FC = (props): JSX.Element | null => {
     const [session, setSession] = useState<Session | null>(null);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
       setLoading(true);
@@ -20,10 +20,14 @@ const withAuthentication: withAuthenticationFn = (Component) => {
         setLoading(false);
       });
 
-      supabase.auth.onAuthStateChange((_event, session) => {
+      const {
+        data: { subscription },
+      } = supabase.auth.onAuthStateChange((_event, session) => {
         setSession(session);
         setLoading(false);
       });
+
+      return () => subscription.unsubscribe();
     }, []);
 
     if (loading) {

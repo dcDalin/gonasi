@@ -6,9 +6,8 @@ import AppLogo from '@/components/AppLogo';
 import MobileContainer from '@/components/containers/MobileContainer';
 import GoButton from '@/components/GoButton';
 import GoText from '@/components/GoText';
-import withoutAuthentication from '@/components/HOC/withoutAuthentication';
 
-function HomeScreen() {
+export default function HomeScreen() {
   const { styles } = useStyles(stylesheet);
 
   return (
@@ -54,5 +53,3 @@ const stylesheet = createStyleSheet((theme) => ({
     gap: theme.size.lg,
   },
 }));
-
-export default withoutAuthentication(HomeScreen);
