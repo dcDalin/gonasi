@@ -39,28 +39,22 @@ export type Database = {
           avatar_url: string | null;
           full_name: string | null;
           id: string;
-          status: Database['public']['Enums']['user_status'] | null;
           updated_at: string | null;
           username: string | null;
-          website: string | null;
         };
         Insert: {
           avatar_url?: string | null;
           full_name?: string | null;
           id: string;
-          status?: Database['public']['Enums']['user_status'] | null;
           updated_at?: string | null;
           username?: string | null;
-          website?: string | null;
         };
         Update: {
           avatar_url?: string | null;
           full_name?: string | null;
           id?: string;
-          status?: Database['public']['Enums']['user_status'] | null;
           updated_at?: string | null;
           username?: string | null;
-          website?: string | null;
         };
         Relationships: [
           {
@@ -213,7 +207,6 @@ export type Database = {
         | 'Traffic Lights Signals'
         | 'Carriageway Markings and Kerb Markings';
       road_signs_classes: 'Class A' | 'Class B' | 'Class C' | 'Class D';
-      user_status: 'ONLINE' | 'OFFLINE';
     };
     CompositeTypes: {
       [_ in never]: never;
