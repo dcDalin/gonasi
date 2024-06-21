@@ -10,7 +10,7 @@ type UserProfile = {
 };
 
 type UpdateProfile = {
-  session: Session;
+  session: Session | null;
   username: string;
   fullName: string;
   avatarUrl: string;
@@ -19,38 +19,46 @@ type UpdateProfile = {
 interface AuthState {
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
-  profile: UserProfile | null;
+  profile: UserProfile;
 }
 
 const initialState: AuthState = {
   status: 'idle',
   error: null,
-  profile: null,
+  profile: {
+    username: '',
+    avatarUrl: '',
+    fullName: '',
+  },
 };
 
 export const getProfile = createAsyncThunk(
   'profile/getProfile',
-  async (session: Session, { rejectWithValue }) => {
+  async (session: Session | null, { rejectWithValue }) => {
     try {
-      const {
-        user: { id },
-      } = session;
+      if (session) {
+        const {
+          user: { id },
+        } = session;
 
-      const { data, error } = await supabase
-        .from('profiles')
-        .select(`username, avatar_url`)
-        .eq('id', id)
-        .single();
+        const { data, error } = await supabase
+          .from('profiles')
+          .select(`username, avatar_url`)
+          .eq('id', id)
+          .single();
 
-      if (error) {
-        throw new Error(error.message);
+        if (error) {
+          throw new Error(error.message);
+        }
+
+        if (!data) {
+          throw new Error('Profile not found');
+        }
+
+        return data;
+      } else {
+        throw new Error('Session not found');
       }
-
-      if (!data) {
-        throw new Error('Profile not found');
-      }
-
-      return data;
     } catch (err: any) {
       return rejectWithValue(err.message);
     }
@@ -61,30 +69,35 @@ export const updateProfile = createAsyncThunk(
   'profile/updateProfile',
   async (profile: UpdateProfile, { rejectWithValue }) => {
     try {
-      const {
-        session: {
-          user: { id },
-        },
-        username,
-        fullName,
-        avatarUrl,
-      } = profile;
+      if (profile.session) {
+        console.log('****** session found');
+        const {
+          session: {
+            user: { id },
+          },
+          username,
+          fullName,
+          avatarUrl,
+        } = profile;
 
-      const updates = {
-        id,
-        username,
-        full_name: fullName,
-        avatar_url: avatarUrl,
-        updated_at: new Date().toISOString(),
-      };
+        const updates = {
+          id,
+          username,
+          full_name: fullName,
+          avatar_url: avatarUrl,
+          updated_at: new Date().toISOString(),
+        };
 
-      const { error } = await supabase.from('profiles').upsert(updates);
+        const { error } = await supabase.from('profiles').upsert(updates);
 
-      if (error) {
-        throw new Error(error.message);
+        if (error) {
+          throw new Error(error.message);
+        }
+
+        return updates;
+      } else {
+        throw new Error('No session found');
       }
-
-      return updates;
     } catch (err: any) {
       return rejectWithValue(err.message);
     }
