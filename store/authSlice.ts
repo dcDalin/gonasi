@@ -4,18 +4,12 @@ import { jwtDecode, JwtPayload } from 'jwt-decode';
 
 import { supabase } from '@/lib/supabase';
 
-type UserProfile = {
-  username: string;
-  avatarUrl: string;
-};
-
 interface AuthState {
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
   isLoggedIn: boolean;
   userRole: string | null;
   session: Session | null;
-  profile: UserProfile | null;
 }
 
 const initialState: AuthState = {
@@ -24,7 +18,6 @@ const initialState: AuthState = {
   isLoggedIn: false,
   userRole: null,
   session: null,
-  profile: null,
 };
 
 type SignUpCredentials = {
@@ -79,33 +72,6 @@ export const loginUser = createAsyncThunk(
 
       if (error) {
         throw new Error(error.message);
-      }
-
-      return data;
-    } catch (err: any) {
-      return rejectWithValue(err.message);
-    }
-  }
-);
-
-export const getProfile = createAsyncThunk(
-  'auth/getProfile',
-  async (session: Session, { rejectWithValue }) => {
-    try {
-      const { user } = session;
-
-      const { data, error } = await supabase
-        .from('profiles')
-        .select(`username, avatar_url`)
-        .eq('id', user.id)
-        .single();
-
-      if (error) {
-        throw new Error(error.message);
-      }
-
-      if (!data) {
-        throw new Error('Profile not found');
       }
 
       return data;
@@ -234,35 +200,6 @@ export const authSlice = createSlice({
         state.error = action.payload || 'Failed to login';
         state.isLoggedIn = false;
         state.userRole = null;
-      })
-      .addCase(getProfile.pending, (state) => {
-        return {
-          ...state,
-          status: 'loading',
-        };
-      })
-      .addCase(getProfile.fulfilled, (state, action: PayloadAction<any>) => {
-        const { username, avatar_url } = action.payload;
-
-        return {
-          ...state,
-          status: 'succeeded',
-          profile: {
-            username: username ?? null,
-            avatarUrl: avatar_url ?? null,
-          },
-        };
-      })
-      .addCase(getProfile.rejected, (state, action: PayloadAction<any>) => {
-        supabase.auth.signOut();
-        return {
-          ...state,
-          status: 'failed',
-          isLoggedIn: false,
-          userRole: null,
-          session: null,
-          error: action.payload,
-        };
       });
   },
 });

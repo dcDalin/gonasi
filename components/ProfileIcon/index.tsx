@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { View } from 'react-native';
 
-import { getProfile } from '@/store/authSlice';
+import { getProfile } from '@/store/profileSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 
 import GoText from '../GoText';
@@ -9,7 +9,8 @@ import GoText from '../GoText';
 export default function ProfileIcon() {
   const dispatch = useAppDispatch();
 
-  const { status, session, profile } = useAppSelector((state) => state.auth);
+  const { session } = useAppSelector((state) => state.auth);
+  const { status, profile } = useAppSelector((state) => state.profile);
 
   useEffect(() => {
     if (session) {
