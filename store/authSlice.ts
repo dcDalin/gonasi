@@ -4,11 +4,18 @@ import { jwtDecode, JwtPayload } from 'jwt-decode';
 
 import { supabase } from '@/lib/supabase';
 
+type UserProfile = {
+  username: string;
+  avatarUrl: string;
+};
+
 interface AuthState {
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
   isLoggedIn: boolean;
   userRole: string | null;
+  session: Session | null;
+  profile: UserProfile | null;
 }
 
 const initialState: AuthState = {
@@ -16,6 +23,8 @@ const initialState: AuthState = {
   error: null,
   isLoggedIn: false,
   userRole: null,
+  session: null,
+  profile: null,
 };
 
 type SignUpCredentials = {
@@ -79,6 +88,33 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+export const getProfile = createAsyncThunk(
+  'auth/getProfile',
+  async (session: Session, { rejectWithValue }) => {
+    try {
+      const { user } = session;
+
+      const { data, error } = await supabase
+        .from('profiles')
+        .select(`username, avatar_url`)
+        .eq('id', user.id)
+        .single();
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      if (!data) {
+        throw new Error('Profile not found');
+      }
+
+      return data;
+    } catch (err: any) {
+      return rejectWithValue(err.message);
+    }
+  }
+);
+
 export const signUpUser = createAsyncThunk(
   'auth/signup',
   async (credentials: SignUpCredentials, { rejectWithValue }) => {
@@ -97,40 +133,59 @@ export const signUpUser = createAsyncThunk(
   }
 );
 
-export const checkIsLoggedIn = createAsyncThunk(
-  'auth/checkIsLoggedIn',
-  async (_, { rejectWithValue }) => {
-    try {
-      const { error, data } = await supabase.auth.getSession();
-
-      if (error) {
-        throw new Error(error.message);
-      }
-
-      if (!data.session) {
-        throw new Error('No session found');
-      }
-
-      return data;
-    } catch (err: any) {
-      return rejectWithValue(err.message);
-    }
-  }
-);
-
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
+    updateUserSession(state, action: PayloadAction<Session | null>) {
+      if (action.payload) {
+        const { user_role }: GoJwtPayload = jwtDecode(
+          action.payload.access_token
+        );
+
+        if (user_role) {
+          return {
+            ...state,
+            status: 'succeeded',
+            isLoggedIn: true,
+            userRole: user_role,
+            session: action.payload,
+          };
+        } else {
+          supabase.auth.signOut();
+          return {
+            ...state,
+            status: 'failed',
+            isLoggedIn: false,
+            userRole: null,
+            session: null,
+          };
+        }
+      } else {
+        supabase.auth.signOut();
+        return {
+          ...state,
+          status: 'failed',
+          isLoggedIn: false,
+          userRole: null,
+          session: null,
+        };
+      }
+    },
     resetErrors(state) {
       state.status = 'idle';
       state.error = null;
     },
     logout(state) {
-      state.isLoggedIn = false;
-      state.userRole = null;
-      state.status = 'idle';
-      state.error = null;
+      supabase.auth.signOut();
+      return {
+        ...state,
+        isLoggedIn: false,
+        userRole: null,
+        status: 'idle',
+        error: null,
+        session: null,
+      };
     },
   },
   extraReducers: (builder) => {
@@ -180,37 +235,38 @@ export const authSlice = createSlice({
         state.isLoggedIn = false;
         state.userRole = null;
       })
-      .addCase(checkIsLoggedIn.pending, (state) => {
-        state.status = 'loading';
-        state.error = null;
+      .addCase(getProfile.pending, (state) => {
+        return {
+          ...state,
+          status: 'loading',
+        };
       })
-      .addCase(
-        checkIsLoggedIn.fulfilled,
-        (state, action: PayloadAction<any>) => {
-          const { user_role }: GoJwtPayload = jwtDecode(
-            action.payload.access_token
-          );
+      .addCase(getProfile.fulfilled, (state, action: PayloadAction<any>) => {
+        const { username, avatar_url } = action.payload;
 
-          return {
-            ...state,
-            status: 'succeeded',
-            isLoggedIn: true,
-            userRole: user_role || '',
-          };
-        }
-      )
-      .addCase(
-        checkIsLoggedIn.rejected,
-        (state, action: PayloadAction<any>) => {
-          state.status = 'failed';
-          state.error = action.payload || 'Failed to login';
-          state.isLoggedIn = false;
-          state.userRole = null;
-        }
-      );
+        return {
+          ...state,
+          status: 'succeeded',
+          profile: {
+            username: username ?? null,
+            avatarUrl: avatar_url ?? null,
+          },
+        };
+      })
+      .addCase(getProfile.rejected, (state, action: PayloadAction<any>) => {
+        supabase.auth.signOut();
+        return {
+          ...state,
+          status: 'failed',
+          isLoggedIn: false,
+          userRole: null,
+          session: null,
+          error: action.payload,
+        };
+      });
   },
 });
 
-export const { logout, resetErrors } = authSlice.actions;
+export const { logout, resetErrors, updateUserSession } = authSlice.actions;
 
 export default authSlice.reducer;

@@ -1,41 +1,40 @@
-import { Session } from '@supabase/supabase-js';
 import { Redirect } from 'expo-router';
 import { type FC, useEffect, useState } from 'react';
 
 import FullPageLoader from '@/components/loaders/FullPageLoader';
 import { supabase } from '@/lib/supabase';
+import { updateUserSession } from '@/store/authSlice';
+import { useAppDispatch, useAppSelector } from '@/store/store';
 
 type withAuthenticationFn = (Component: FC) => FC;
 
 const withAuthentication: withAuthenticationFn = (Component) => {
   const Authenticated: FC = (props): JSX.Element | null => {
-    const [session, setSession] = useState<Session | null>(null);
+    const dispatch = useAppDispatch();
+    const { isLoggedIn } = useAppSelector((state) => state.auth);
+
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
       setLoading(true);
 
       supabase.auth.getSession().then(({ data: { session } }) => {
-        setSession(session);
+        dispatch(updateUserSession(session));
         setLoading(false);
       });
 
       const {
         data: { subscription },
       } = supabase.auth.onAuthStateChange((_event, session) => {
-        setSession(session);
+        dispatch(updateUserSession(session));
         setLoading(false);
       });
 
       return () => subscription.unsubscribe();
-    }, []);
+    }, [dispatch, isLoggedIn]);
 
     if (loading) {
       return <FullPageLoader />;
-    }
-
-    if (!session) {
-      return <Redirect href="/" />;
     }
 
     return <Component {...props} />;
