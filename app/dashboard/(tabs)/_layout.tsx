@@ -2,7 +2,7 @@ import { Tabs } from 'expo-router';
 import { Home, User } from 'lucide-react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
-import ProfileIcon from '@/components/ProfileIcon';
+import Avatar from '@/components/Avatar';
 
 export default function TabsLayout() {
   const {
@@ -39,7 +39,7 @@ export default function TabsLayout() {
         name="profile"
         options={{
           headerShown: false,
-          tabBarIcon: () => <ProfileIcon />,
+          tabBarIcon: () => <Avatar />,
         }}
       />
     </Tabs>

@@ -6,6 +6,7 @@ import { supabase } from '@/lib/supabase';
 type UserProfile = {
   username: string;
   avatarUrl: string;
+  avatarHref: string | null;
   fullName: string;
 };
 
@@ -14,6 +15,13 @@ type UpdateProfile = {
   username: string;
   fullName: string;
   avatarUrl: string;
+};
+
+type GetProfilePayload = {
+  username: string | null;
+  full_name: string | null;
+  avatar_url: string | null;
+  avatarHref: string | null;
 };
 
 interface AuthState {
@@ -29,6 +37,7 @@ const initialState: AuthState = {
     username: '',
     avatarUrl: '',
     fullName: '',
+    avatarHref: null,
   },
 };
 
@@ -43,7 +52,7 @@ export const getProfile = createAsyncThunk(
 
         const { data, error } = await supabase
           .from('profiles')
-          .select(`username, avatar_url`)
+          .select('username, full_name, avatar_url')
           .eq('id', id)
           .single();
 
@@ -55,7 +64,37 @@ export const getProfile = createAsyncThunk(
           throw new Error('Profile not found');
         }
 
-        return data;
+        const { data: storageData, error: storageError } =
+          await supabase.storage
+            .from('avatars')
+            .download(data.avatar_url || '');
+
+        if (storageError) {
+          console.log('Storage error');
+          return {
+            ...data,
+            avatarHref: null,
+          };
+        }
+
+        const readFileAsDataURL = (
+          file: Blob
+        ): Promise<string | ArrayBuffer | null> => {
+          return new Promise((resolve, reject) => {
+            const fr = new FileReader();
+            fr.onload = () => resolve(fr.result);
+            fr.onerror = reject;
+            fr.readAsDataURL(file);
+          });
+        };
+
+        const avatarHref = await readFileAsDataURL(storageData);
+
+        console.log('Profile found');
+        return {
+          ...data,
+          avatarHref,
+        };
       } else {
         throw new Error('Session not found');
       }
@@ -121,19 +160,25 @@ export const profileSlice = createSlice({
           status: 'loading',
         };
       })
-      .addCase(getProfile.fulfilled, (state, action: PayloadAction<any>) => {
-        const { username, avatar_url, full_name } = action.payload;
+      .addCase(
+        getProfile.fulfilled,
+        (state, action: PayloadAction<GetProfilePayload>) => {
+          console.log('******** payload: ', action.payload);
+          const { username, avatar_url, full_name, avatarHref } =
+            action.payload;
 
-        return {
-          ...state,
-          status: 'succeeded',
-          profile: {
-            username: username ?? '',
-            fullName: full_name ?? '',
-            avatarUrl: avatar_url ?? '',
-          },
-        };
-      })
+          return {
+            ...state,
+            status: 'succeeded',
+            profile: {
+              username: username ?? '',
+              fullName: full_name ?? '',
+              avatarUrl: avatar_url ?? '',
+              avatarHref,
+            },
+          };
+        }
+      )
       .addCase(getProfile.rejected, (state, action: PayloadAction<any>) => {
         supabase.auth.signOut();
         return {
@@ -158,6 +203,7 @@ export const profileSlice = createSlice({
             username: username ?? '',
             fullName: fullName ?? '',
             avatarUrl: avatarUrl ?? '',
+            avatarHref: null, // TODO: Look into this
           },
         };
       })
