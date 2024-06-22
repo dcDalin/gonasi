@@ -1,6 +1,4 @@
-import { useState } from 'react';
-import { View } from 'react-native';
-
+import MobileContainer from '@/components/containers/MobileContainer';
 import GoButton from '@/components/GoButton';
 import GoText from '@/components/GoText';
 import Avatar from '@/components/ProfileIcon/Avatar';
@@ -17,7 +15,7 @@ export default function ProfileTabScreen() {
   } = useAppSelector((state) => state.profile);
 
   return (
-    <View>
+    <MobileContainer>
       <GoText text="Profile goes here" />
       <GoButton onPress={() => supabase.auth.signOut()} text="Logout" />
       <Avatar
@@ -29,6 +27,6 @@ export default function ProfileTabScreen() {
           );
         }}
       />
-    </View>
+    </MobileContainer>
   );
 }

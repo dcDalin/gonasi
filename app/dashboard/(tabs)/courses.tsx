@@ -1,11 +1,10 @@
-import { View } from 'react-native';
-
+import MobileContainer from '@/components/containers/MobileContainer';
 import GoText from '@/components/GoText';
 
 export default function CoursesTabScreen() {
   return (
-    <View>
+    <MobileContainer>
       <GoText text="Profile goes here" />
-    </View>
+    </MobileContainer>
   );
 }
