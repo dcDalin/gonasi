@@ -1,6 +1,7 @@
-import { Image } from 'react-native';
+import { Image } from 'expo-image';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
+import { blurhash } from '@/components/GoIcon';
 import { supabase } from '@/lib/supabase';
 import { useAppSelector } from '@/store/store';
 
@@ -16,18 +17,16 @@ export default function Avatar(props: IAvatarProps) {
 
   const { profile } = useAppSelector((state) => state.profile);
 
-  const {
-    data: { publicUrl },
-  } = supabase.storage.from('avatars').getPublicUrl(profile.avatarUrl);
-
   return (
     <>
       <Image
         source={{
-          uri: publicUrl,
+          uri: profile.avatarUrl,
         }}
+        contentFit="contain"
         accessibilityLabel="Avatar"
         style={styles.avatar(size, color)}
+        placeholder={{ blurhash }}
       />
     </>
   );

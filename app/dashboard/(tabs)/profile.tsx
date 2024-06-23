@@ -2,7 +2,7 @@ import MobileContainer from '@/components/containers/MobileContainer';
 import GoButton from '@/components/GoButton';
 import GoText from '@/components/GoText';
 import Avatar from '@/components/ProfileIcon/Avatar';
-import { supabase } from '@/lib/supabase';
+import { logout } from '@/store/authSlice';
 import { updateProfile } from '@/store/profileSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 
@@ -17,7 +17,7 @@ export default function ProfileTabScreen() {
   return (
     <MobileContainer>
       <GoText text="Profile goes here" />
-      <GoButton onPress={() => supabase.auth.signOut()} text="Logout" />
+      <GoButton onPress={() => dispatch(logout())} text="Logout" />
       <Avatar
         size={200}
         url={avatarUrl}

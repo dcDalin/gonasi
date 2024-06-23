@@ -1,3 +1,4 @@
+import { Redirect } from 'expo-router';
 import { type FC, useEffect, useState } from 'react';
 
 import FullPageLoader from '@/components/loaders/FullPageLoader';
@@ -13,7 +14,7 @@ const withAuthentication: withAuthenticationFn = (Component) => {
     const dispatch = useAppDispatch();
 
     const [loading, setLoading] = useState(true);
-    const { status } = useAppSelector((state) => state.auth);
+    const { status, isLoggedIn } = useAppSelector((state) => state.auth);
     const { status: profileStatus } = useAppSelector((state) => state.profile);
 
     useEffect(() => {
@@ -34,7 +35,11 @@ const withAuthentication: withAuthenticationFn = (Component) => {
       });
 
       return () => subscription.unsubscribe();
-    }, [dispatch]);
+    }, [dispatch, isLoggedIn]);
+
+    if (!isLoggedIn) {
+      return <Redirect href="/" />;
+    }
 
     if (loading || status === 'loading' || profileStatus === 'loading') {
       return <FullPageLoader />;

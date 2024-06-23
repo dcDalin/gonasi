@@ -42,27 +42,6 @@ interface GoJwtPayload extends JwtPayload {
 
 type LoginCredentials = { email: string; password: string };
 
-export const usernameExists = createAsyncThunk(
-  'auth/usernameExists',
-  async (username: string, { rejectWithValue }) => {
-    try {
-      const { error, data } = await supabase
-        .from('profiles')
-        .select(`username`)
-        .eq('username', username)
-        .single();
-
-      if (error) {
-        throw new Error(error.message);
-      }
-
-      return data;
-    } catch (err: any) {
-      return rejectWithValue(err.message);
-    }
-  }
-);
-
 export const loginUser = createAsyncThunk(
   'auth/login',
   async (credentials: LoginCredentials, { rejectWithValue }) => {

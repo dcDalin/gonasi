@@ -61,7 +61,16 @@ export const getProfile = createAsyncThunk(
           throw new Error('Profile not found');
         }
 
-        return data;
+        const {
+          data: { publicUrl },
+        } = supabase.storage
+          .from('avatars')
+          .getPublicUrl(data.avatar_url || '');
+
+        return {
+          ...data,
+          avatar_url: publicUrl,
+        };
       } else {
         throw new Error('Session not found');
       }
@@ -145,9 +154,7 @@ export const profileSlice = createSlice({
       .addCase(getProfile.rejected, (state, action: PayloadAction<any>) => {
         supabase.auth.signOut();
         return {
-          ...state,
-          status: 'failed',
-          error: action.payload,
+          ...initialState,
         };
       })
       .addCase(updateProfile.pending, (state) => {
@@ -166,7 +173,6 @@ export const profileSlice = createSlice({
             username: username ?? '',
             fullName: fullName ?? '',
             avatarUrl: avatarUrl ?? '',
-            avatarHref: null, // TODO: Look into this
           },
         };
       })
