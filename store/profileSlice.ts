@@ -6,7 +6,6 @@ import { supabase } from '@/lib/supabase';
 type UserProfile = {
   username: string;
   avatarUrl: string;
-  avatarHref: string | null;
   fullName: string;
 };
 
@@ -21,7 +20,6 @@ type GetProfilePayload = {
   username: string | null;
   full_name: string | null;
   avatar_url: string | null;
-  avatarHref: string | null;
 };
 
 interface AuthState {
@@ -37,7 +35,6 @@ const initialState: AuthState = {
     username: '',
     avatarUrl: '',
     fullName: '',
-    avatarHref: null,
   },
 };
 
@@ -64,37 +61,7 @@ export const getProfile = createAsyncThunk(
           throw new Error('Profile not found');
         }
 
-        const { data: storageData, error: storageError } =
-          await supabase.storage
-            .from('avatars')
-            .download(data.avatar_url || '');
-
-        if (storageError) {
-          console.log('Storage error');
-          return {
-            ...data,
-            avatarHref: null,
-          };
-        }
-
-        const readFileAsDataURL = (
-          file: Blob
-        ): Promise<string | ArrayBuffer | null> => {
-          return new Promise((resolve, reject) => {
-            const fr = new FileReader();
-            fr.onload = () => resolve(fr.result);
-            fr.onerror = reject;
-            fr.readAsDataURL(file);
-          });
-        };
-
-        const avatarHref = await readFileAsDataURL(storageData);
-
-        console.log('Profile found');
-        return {
-          ...data,
-          avatarHref,
-        };
+        return data;
       } else {
         throw new Error('Session not found');
       }
@@ -109,7 +76,6 @@ export const updateProfile = createAsyncThunk(
   async (profile: UpdateProfile, { rejectWithValue }) => {
     try {
       if (profile.session) {
-        console.log('****** session found');
         const {
           session: {
             user: { id },
@@ -163,9 +129,7 @@ export const profileSlice = createSlice({
       .addCase(
         getProfile.fulfilled,
         (state, action: PayloadAction<GetProfilePayload>) => {
-          console.log('******** payload: ', action.payload);
-          const { username, avatar_url, full_name, avatarHref } =
-            action.payload;
+          const { username, avatar_url, full_name } = action.payload;
 
           return {
             ...state,
@@ -174,7 +138,6 @@ export const profileSlice = createSlice({
               username: username ?? '',
               fullName: full_name ?? '',
               avatarUrl: avatar_url ?? '',
-              avatarHref,
             },
           };
         }

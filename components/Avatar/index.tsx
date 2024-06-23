@@ -1,53 +1,37 @@
-import { useEffect } from 'react';
-import { Image, View } from 'react-native';
+import { Image } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
-import { getProfile } from '@/store/profileSlice';
-import { useAppDispatch, useAppSelector } from '@/store/store';
+import { supabase } from '@/lib/supabase';
+import { useAppSelector } from '@/store/store';
 
 export default function Avatar() {
   const { styles } = useStyles(stylesheet);
-  const dispatch = useAppDispatch();
 
-  const { session } = useAppSelector((state) => state.auth);
+  const { profile } = useAppSelector((state) => state.profile);
+
   const {
-    status,
-    profile: { avatarHref },
-  } = useAppSelector((state) => state.profile);
-
-  useEffect(() => {
-    if (session) {
-      dispatch(getProfile(session));
-    }
-  }, [dispatch, session]);
+    data: { publicUrl },
+  } = supabase.storage.from('avatars').getPublicUrl(profile.avatarUrl);
 
   return (
     <>
-      {status === 'loading' ? (
-        <View style={styles.wrapper}></View>
-      ) : avatarHref ? (
-        <Image
-          source={{ uri: avatarHref }}
-          accessibilityLabel="Avatar"
-          style={styles.avatar}
-        />
-      ) : (
-        <View style={styles.wrapper}></View>
-      )}
+      <Image
+        source={{
+          uri: publicUrl,
+        }}
+        accessibilityLabel="Avatar"
+        style={styles.avatar}
+      />
     </>
   );
 }
 
-const stylesheet = createStyleSheet(({ size }) => ({
-  wrapper: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    borderWidth: 2,
-  },
+const stylesheet = createStyleSheet(({ size, colors }) => ({
   avatar: {
-    height: 28,
-    width: 28,
-    borderRadius: 14,
+    height: 22,
+    width: 22,
+    borderRadius: 11,
+    borderWidth: 2,
+    borderColor: colors.baseContent,
   },
 }));
