@@ -4,7 +4,14 @@ import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import { supabase } from '@/lib/supabase';
 import { useAppSelector } from '@/store/store';
 
-export default function Avatar() {
+interface IAvatarProps {
+  size: number;
+  color: string;
+}
+
+export default function Avatar(props: IAvatarProps) {
+  const { size = 22, color } = props;
+
   const { styles } = useStyles(stylesheet);
 
   const { profile } = useAppSelector((state) => state.profile);
@@ -20,18 +27,18 @@ export default function Avatar() {
           uri: publicUrl,
         }}
         accessibilityLabel="Avatar"
-        style={styles.avatar}
+        style={styles.avatar(size, color)}
       />
     </>
   );
 }
 
-const stylesheet = createStyleSheet(({ size, colors }) => ({
-  avatar: {
-    height: 22,
-    width: 22,
-    borderRadius: 11,
+const stylesheet = createStyleSheet(() => ({
+  avatar: (size: number, color: string) => ({
+    height: size,
+    width: size,
+    borderRadius: size / 2,
     borderWidth: 2,
-    borderColor: colors.baseContent,
-  },
+    borderColor: color,
+  }),
 }));

@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { Home, User } from 'lucide-react-native';
+import { Home, LibraryBig } from 'lucide-react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
 import Avatar from '@/components/Avatar';
@@ -32,14 +32,14 @@ export default function TabsLayout() {
         name="courses"
         options={{
           title: 'Courses',
-          tabBarIcon: ({ color }) => <User size={22} color={color} />,
+          tabBarIcon: ({ color }) => <LibraryBig size={22} color={color} />,
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
           headerShown: false,
-          tabBarIcon: () => <Avatar />,
+          tabBarIcon: ({ color }) => <Avatar size={22} color={color} />,
         }}
       />
     </Tabs>
