@@ -67,7 +67,6 @@ export const signUpUser = createAsyncThunk(
       const { error, data } = await supabase.auth.signUp(credentials);
 
       if (error) {
-        console.log('Error is: ', error);
         throw new Error(error.message);
       }
 

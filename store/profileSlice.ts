@@ -151,7 +151,7 @@ export const profileSlice = createSlice({
           };
         }
       )
-      .addCase(getProfile.rejected, (state, action: PayloadAction<any>) => {
+      .addCase(getProfile.rejected, () => {
         supabase.auth.signOut();
         return {
           ...initialState,

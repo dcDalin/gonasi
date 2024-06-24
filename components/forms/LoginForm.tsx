@@ -119,7 +119,6 @@ export default function LoginForm() {
   });
 
   const onSubmit: SubmitHandler<LoginFormValues> = async (loginPayload) => {
-    console.log('Payload is: ', loginPayload);
     await dispatch(loginUser(loginPayload));
   };
 
