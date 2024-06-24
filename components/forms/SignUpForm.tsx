@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ComponentType, useEffect, useMemo, useRef, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { TextInput, View } from 'react-native';
+import { ActivityIndicator, TextInput, View } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import * as Yup from 'yup';
@@ -12,8 +12,10 @@ import {
   GoTextField,
   GoTextFieldAccessoryProps,
 } from '@/components/GoTextField';
+import { useDebounce } from '@/components/hooks/useDebounce';
 import { resetErrors, signUpUser } from '@/store/authSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
+import { checkUsernameExists } from '@/store/usernameExistsSlice';
 
 const signUpFormValidationSchema = Yup.object().shape({
   username: Yup.string()
@@ -49,13 +51,52 @@ export type SignUpFormValues = {
 };
 
 export default function SignUpForm() {
+  const {
+    styles,
+    theme: { colors },
+  } = useStyles(stylesheet);
+
   const [isAuthPasswordHidden, setIsAuthPasswordHidden] = useState(true);
   const authPasswordInput = useRef<TextInput>(null);
 
   const dispatch = useAppDispatch();
   const { error, status } = useAppSelector((state) => state.auth);
 
+  const { status: usernameExistsStatus, usernameExists } = useAppSelector(
+    (state) => state.usernameExists
+  );
+
   const isLoading = status === 'loading';
+
+  const {
+    handleSubmit,
+    watch,
+    setError,
+    control,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(signUpFormValidationSchema),
+    mode: 'onChange',
+  });
+
+  const watchUsernameChange = watch('username');
+
+  const debouncedUsername = useDebounce(watchUsernameChange, 500);
+
+  useEffect(() => {
+    if (debouncedUsername) {
+      dispatch(checkUsernameExists(debouncedUsername));
+    }
+  }, [debouncedUsername, dispatch]);
+
+  useEffect(() => {
+    if (usernameExists) {
+      setError('username', {
+        type: 'usernameExists',
+        message: 'Username already exists',
+      });
+    }
+  }, [setError, usernameExists]);
 
   useEffect(() => {
     if (error) {
@@ -67,11 +108,6 @@ export default function SignUpForm() {
       dispatch(resetErrors());
     }
   }, [dispatch, error]);
-
-  const {
-    styles,
-    theme: { colors },
-  } = useStyles(stylesheet);
 
   const PasswordRightAccessory: ComponentType<GoTextFieldAccessoryProps> =
     useMemo(
@@ -108,6 +144,14 @@ export default function SignUpForm() {
       [colors.error, colors.neutral, isLoading]
     );
 
+  const UsernameRightLoadingAccessory: ComponentType<
+    GoTextFieldAccessoryProps
+  > = (props: GoTextFieldAccessoryProps) => (
+    <View style={props.style}>
+      {usernameExistsStatus === 'loading' ? <ActivityIndicator /> : null}
+    </View>
+  );
+
   const EmailLeftAccessory: ComponentType<GoTextFieldAccessoryProps> = useMemo(
     () =>
       function EmailLeftAccessory(props: GoTextFieldAccessoryProps) {
@@ -141,15 +185,6 @@ export default function SignUpForm() {
       [colors.error, colors.neutral, isLoading]
     );
 
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(signUpFormValidationSchema),
-    mode: 'onChange',
-  });
-
   const onSubmit: SubmitHandler<SignUpFormValues> = async (signUpPayload) => {
     const { username, email, password } = signUpPayload;
 
@@ -182,6 +217,7 @@ export default function SignUpForm() {
             placeholder="Enter your username"
             helper={errors?.username?.message}
             LeftAccessory={UsernameLeftAccessory}
+            RightAccessory={UsernameRightLoadingAccessory}
             status={
               errors?.username?.message
                 ? 'error'

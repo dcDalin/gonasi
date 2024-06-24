@@ -14,6 +14,7 @@ import {
 
 import authReducer from '@/store/authSlice';
 import profileReducer from '@/store/profileSlice';
+import usernameExistsReducer from '@/store/usernameExistsSlice';
 
 const persistConfig = {
   key: 'root',
@@ -24,6 +25,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   auth: authReducer,
   profile: profileReducer,
+  usernameExists: usernameExistsReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

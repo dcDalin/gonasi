@@ -2,7 +2,6 @@ import { Image } from 'expo-image';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
 import { blurhash } from '@/components/GoIcon';
-import { supabase } from '@/lib/supabase';
 import { useAppSelector } from '@/store/store';
 
 interface IAvatarProps {
