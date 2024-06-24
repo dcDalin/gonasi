@@ -4,12 +4,12 @@ import { supabase } from '@/lib/supabase';
 
 interface UsernameExistsState {
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
-  usernameExists: boolean;
+  username: boolean;
 }
 
 const initialState: UsernameExistsState = {
   status: 'idle',
-  usernameExists: false,
+  username: false,
 };
 
 export const checkUsernameExists = createAsyncThunk(
@@ -41,15 +41,16 @@ export const usernameExistsSlice = createSlice({
     builder
       .addCase(checkUsernameExists.pending, (state) => {
         state.status = 'loading';
-        state.usernameExists = false;
+        state.username = false;
       })
       .addCase(checkUsernameExists.fulfilled, (state) => {
+        console.log('Fullfilled &&&&&&&&&&&');
         state.status = 'succeeded';
-        state.usernameExists = true;
+        state.username = true;
       })
       .addCase(checkUsernameExists.rejected, (state) => {
         state.status = 'failed';
-        state.usernameExists = false;
+        state.username = false;
       });
   },
 });

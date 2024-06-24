@@ -62,7 +62,7 @@ export default function SignUpForm() {
   const dispatch = useAppDispatch();
   const { error, status } = useAppSelector((state) => state.auth);
 
-  const { status: usernameExistsStatus, usernameExists } = useAppSelector(
+  const { status: usernameExistsStatus, username } = useAppSelector(
     (state) => state.usernameExists
   );
 
@@ -90,13 +90,13 @@ export default function SignUpForm() {
   }, [debouncedUsername, dispatch]);
 
   useEffect(() => {
-    if (usernameExists) {
+    if (debouncedUsername && username) {
       setError('username', {
         type: 'usernameExists',
         message: 'Username already exists',
       });
     }
-  }, [setError, usernameExists]);
+  }, [debouncedUsername, setError, username]);
 
   useEffect(() => {
     if (error) {
