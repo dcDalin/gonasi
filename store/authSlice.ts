@@ -64,6 +64,16 @@ export const signUpUser = createAsyncThunk(
   'auth/signup',
   async (credentials: SignUpCredentials, { rejectWithValue }) => {
     try {
+      const { data: usernameExistsData } = await supabase
+        .from('profiles')
+        .select('username')
+        .eq('username', credentials.options.data.username)
+        .single();
+
+      if (usernameExistsData) {
+        throw new Error('Username already exists');
+      }
+
       const { error, data } = await supabase.auth.signUp(credentials);
 
       if (error) {

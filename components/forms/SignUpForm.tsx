@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ComponentType, useEffect, useMemo, useRef, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { ActivityIndicator, TextInput, View } from 'react-native';
+import { TextInput, View } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import * as Yup from 'yup';
@@ -12,10 +12,8 @@ import {
   GoTextField,
   GoTextFieldAccessoryProps,
 } from '@/components/GoTextField';
-import { useDebounce } from '@/components/hooks/useDebounce';
 import { resetErrors, signUpUser } from '@/store/authSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
-import { checkUsernameExists } from '@/store/usernameExistsSlice';
 
 const signUpFormValidationSchema = Yup.object().shape({
   username: Yup.string()
@@ -62,41 +60,17 @@ export default function SignUpForm() {
   const dispatch = useAppDispatch();
   const { error, status } = useAppSelector((state) => state.auth);
 
-  const { status: usernameExistsStatus, username } = useAppSelector(
-    (state) => state.usernameExists
-  );
-
   const isLoading = status === 'loading';
 
   const {
     handleSubmit,
-    watch,
-    setError,
+
     control,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(signUpFormValidationSchema),
     mode: 'onChange',
   });
-
-  const watchUsernameChange = watch('username');
-
-  const debouncedUsername = useDebounce(watchUsernameChange, 500);
-
-  useEffect(() => {
-    if (debouncedUsername) {
-      dispatch(checkUsernameExists(debouncedUsername));
-    }
-  }, [debouncedUsername, dispatch]);
-
-  useEffect(() => {
-    if (debouncedUsername && username) {
-      setError('username', {
-        type: 'usernameExists',
-        message: 'Username already exists',
-      });
-    }
-  }, [debouncedUsername, setError, username]);
 
   useEffect(() => {
     if (error) {
@@ -143,14 +117,6 @@ export default function SignUpForm() {
         },
       [colors.error, colors.neutral, isLoading]
     );
-
-  const UsernameRightLoadingAccessory: ComponentType<
-    GoTextFieldAccessoryProps
-  > = (props: GoTextFieldAccessoryProps) => (
-    <View style={props.style}>
-      {usernameExistsStatus === 'loading' ? <ActivityIndicator /> : null}
-    </View>
-  );
 
   const EmailLeftAccessory: ComponentType<GoTextFieldAccessoryProps> = useMemo(
     () =>
@@ -217,7 +183,6 @@ export default function SignUpForm() {
             placeholder="Enter your username"
             helper={errors?.username?.message}
             LeftAccessory={UsernameLeftAccessory}
-            RightAccessory={UsernameRightLoadingAccessory}
             status={
               errors?.username?.message
                 ? 'error'
